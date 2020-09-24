@@ -108,6 +108,7 @@ namespace BigIntClass
             char[] resultCharArr = revertedResult.ToCharArray();
             Array.Reverse(resultCharArr);
             this.value = new string(resultCharArr).TrimStart('0');
+            if (this.value.Length == 0) { this.Set("0"); }
         }
 
         public void Subtract(string reducer)
@@ -186,6 +187,7 @@ namespace BigIntClass
             char[] resultCharArr = revertedResult.ToCharArray();
             Array.Reverse(resultCharArr);
             this.value = new string(resultCharArr).TrimStart('0');
+            if (this.value.Length == 0) { this.Set("0"); }
         }
 
         public void Multiply(string factor)
