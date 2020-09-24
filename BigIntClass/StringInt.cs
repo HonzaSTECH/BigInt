@@ -38,7 +38,7 @@ namespace BigIntClass
             if (value[0] == '-')
             {
                 isNegative = true;
-                value = value.Substring(1);
+                value = value.TrimStart('-');
             }
             this.SetValue(value, isNegative);
         }
@@ -91,8 +91,12 @@ namespace BigIntClass
                 try
                 {
                     a = Convert.ToInt16(num[num.Length - i].ToString());
-                    b = Convert.ToInt16(addition[addition.Length - i].ToString());
                 } catch (IndexOutOfRangeException) { }
+                try
+                {
+                    b = Convert.ToInt16(addition[addition.Length - i].ToString());
+                }
+                catch (IndexOutOfRangeException) { }
 
                 int result = Convert.ToInt16(a) + Convert.ToInt16(b) + c;
                 c = 0;
@@ -101,7 +105,7 @@ namespace BigIntClass
                     c++;
                     result -= 10;
                 }
-                revertedResult += result;
+                revertedResult += result.ToString();
             }
 
             //Revert string
@@ -169,6 +173,10 @@ namespace BigIntClass
                 try
                 {
                     a = Convert.ToInt16(num[num.Length - i].ToString());
+                }
+                catch (IndexOutOfRangeException) { }
+                try
+                {
                     b = Convert.ToInt16(reducer[reducer.Length - i].ToString());
                 }
                 catch (IndexOutOfRangeException) { }
@@ -180,7 +188,7 @@ namespace BigIntClass
                     c++;
                     result += 10;
                 }
-                revertedResult += result;
+                revertedResult += result.ToString();
             }
 
             //Revert string
