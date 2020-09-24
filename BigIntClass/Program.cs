@@ -16,8 +16,11 @@ namespace BigIntClass
 
                 strint.Add(b);
                 //strint.Subtract(b);
-            
+                //strint.Multiply(b);
+
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(strint.ToString());
+                Console.ResetColor();
             }
             Console.ReadKey(true);
         }

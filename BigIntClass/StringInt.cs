@@ -45,7 +45,7 @@ namespace BigIntClass
 
         public void Add(string addition)
         {
-            //Console.WriteLine("Called add with argument " + addition + " and value " + this.GetValue());
+            Console.WriteLine("Called add with argument " + addition + " and value " + this.GetValue());
             if (!this.isNegative)
             {
                 if (addition[0] != '-')
@@ -112,7 +112,7 @@ namespace BigIntClass
 
         public void Subtract(string reducer)
         {
-            //Console.WriteLine("Called subtract with argument " + reducer + " and value " + this.GetValue());
+            Console.WriteLine("Called subtract with argument " + reducer + " and value " + this.GetValue());
             if (!this.isNegative)
             {
                 if (reducer[0] != '-')
@@ -141,9 +141,21 @@ namespace BigIntClass
                 else
                 {
                     //(-) - (-)
-                    reducer = reducer.TrimStart('-');
+                    //Don't change anything
                 }
             }
+
+            //Make sure the first number is greater than the reducer
+            StringInt temp = new StringInt(reducer.TrimStart('-'));
+            if (temp.GreaterThan(this.value.TrimStart('-')))
+            {
+                string tempVal = this.GetValue();
+                this.Set(reducer);
+                reducer = tempVal;
+                this.isNegative = !this.isNegative;
+            }
+
+            reducer = reducer.TrimStart('-');
 
             int numLength = (reducer.Length > this.value.Length) ? reducer.Length : this.value.Length;
             numLength++;
