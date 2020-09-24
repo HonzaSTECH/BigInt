@@ -45,7 +45,7 @@ namespace BigIntClass
 
         public void Add(string addition)
         {
-            Console.WriteLine("Called add with argument " + addition + " and value " + this.GetValue());
+            //Console.WriteLine("Called add with argument " + addition + " and value " + this.GetValue());
             if (!this.isNegative)
             {
                 if (addition[0] != '-')
@@ -117,7 +117,7 @@ namespace BigIntClass
 
         public void Subtract(string reducer)
         {
-            Console.WriteLine("Called subtract with argument " + reducer + " and value " + this.GetValue());
+            //Console.WriteLine("Called subtract with argument " + reducer + " and value " + this.GetValue());
             if (!this.isNegative)
             {
                 if (reducer[0] != '-')
@@ -200,27 +200,26 @@ namespace BigIntClass
 
         public void Multiply(string factor)
         {
-            Console.WriteLine("Called multiply with argument " + factor + " and value " + this.GetValue());
-
+            //Console.WriteLine("Called multiply with argument " + factor + " and value " + this.GetValue());
             if (factor[0] == '-' ^ this.isNegative)
             {
                 this.isNegative = true;
-                factor = factor.TrimStart('-');
             }
             else
             {
                 this.isNegative = false;
             }
-            
-            string num = this.value;
 
             //Make sure the second factor (stored in variable factor) is shorter
-            if (num.Length < factor.Length)
+            if (this.value.Length < factor.Length)
             {
                 string temp = this.value;
-                this.value = factor;
+                this.value = factor.TrimStart('-');
                 factor = temp;
             }
+
+            factor = factor.TrimStart('-');
+            string num = this.value;
 
             int factorLength = factor.Length;
             short c = 0;
@@ -234,34 +233,39 @@ namespace BigIntClass
                     b = Convert.ToInt16(factor[factor.Length - i].ToString());
                 }
                 catch (IndexOutOfRangeException) { }
-                for (int j = 1; j <= num.Length - 1; j++)
+                for (int j = 1; j <= num.Length + 1; j++)
                 {
                     short a = 0;
                     try
                     {
-                        a = Convert.ToInt16(num[num.Length - i].ToString());
+                        a = Convert.ToInt16(num[num.Length - j].ToString());
                     }
                     catch (IndexOutOfRangeException) { }
 
-                    int result = Convert.ToInt16(a) * (Convert.ToInt16(b) + c);
+                    int result = (Convert.ToInt16(a) * Convert.ToInt16(b) + c);
                     c = 0;
-                    if (result < 0)
+                    if (result >= 10)
                     {
                         c = (short)(result / 10);
                         result %= 10;
                     }
                     revertedResult += result;
                 }
-                //Revert string and save it as part result
+                //Revert string
                 char[] resultCharArr = revertedResult.ToCharArray();
                 Array.Reverse(resultCharArr);
-                partResults[i - 1] = new string(resultCharArr).TrimStart('0'); ;
+
+                //Add extra zeros to the end and save it as part result
+                string suffix = String.Empty;
+                for (int j = 0; j < i - 1; j++) { suffix += "0"; }
+                partResults[i - 1] = new string(resultCharArr).TrimStart('0') + suffix;
             }
 
             //Add all part results together
             StringInt sum = new StringInt("0");
             for (int i = 0; i < factorLength; i++)
             {
+                if (partResults[i].Length == 0) { partResults[i] = "0"; }
                 sum.Add(partResults[i]);
             }
             this.value = sum.GetValue().TrimStart('-');

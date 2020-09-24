@@ -14,9 +14,9 @@ namespace BigIntClass
 
                 StringInt strint = new StringInt(a);
 
-                strint.Add(b);
+                //strint.Add(b);
                 //strint.Subtract(b);
-                //strint.Multiply(b);
+                strint.Multiply(b);
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(strint.ToString());
