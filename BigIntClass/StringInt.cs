@@ -46,25 +46,40 @@ namespace BigIntClass
         public void Add(string addition)
         {
             //Console.WriteLine("Called add with argument " + addition + " and value " + this.GetValue());
-            if (addition[0] == '-' && !this.isNegative)
+            if (!this.isNegative)
             {
-                addition = addition.TrimStart('-');
-                this.Subtract(addition);
-                return;
+                if (addition[0] != '-')
+                {
+                    //(+) + (+)
+                    //Don't change anything
+                }
+                else
+                {
+                    //(+) + (-)
+                    addition = addition.TrimStart('-');
+                    this.Subtract(addition);
+                    return;
+                }
             }
-            if (addition[0] != '-' && this.isNegative)
+            else
             {
-                string temp = this.GetValue();
-                this.Set(addition);
-                addition = temp.TrimStart('-');
-                this.Subtract(addition);
-                this.isNegative = true;
-                return;
+                if (addition[0] != '-')
+                {
+                    //(-) + (+)
+                    string temp = this.value;
+                    this.Set(addition);
+                    addition = temp.TrimStart('-');
+                    this.isNegative = false;
+                    this.Subtract(addition);
+                    return;
+                }
+                else
+                {
+                    //(-) + (-)
+                    this.isNegative = true;
+                    addition = addition.TrimStart('-');
+                }
             }
-            if (addition[0] == '-') { this.isNegative = true; } //Both numbers are negative
-            else { this.isNegative = false; }   //Both numbers are positive
-
-            addition = addition.TrimStart('-');
 
             int numLength = (addition.Length > this.value.Length) ? addition.Length : this.value.Length;
             numLength++;
