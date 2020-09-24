@@ -76,7 +76,6 @@ namespace BigIntClass
                 else
                 {
                     //(-) + (-)
-                    this.isNegative = true;
                     addition = addition.TrimStart('-');
                 }
             }
@@ -114,37 +113,37 @@ namespace BigIntClass
         public void Subtract(string reducer)
         {
             //Console.WriteLine("Called subtract with argument " + reducer + " and value " + this.GetValue());
-            if (this.SmallerThan(reducer))
+            if (!this.isNegative)
             {
-                this.isNegative = true;
-                string temp = this.value;
-                this.value = reducer.TrimStart('-');
-                reducer = temp;
-            }
-            
-            if (reducer[0] == '-' ^ this.isNegative)
-            {
-                if (reducer[0] == '-')
+                if (reducer[0] != '-')
                 {
-                    reducer = reducer.TrimStart('-');
-                    this.isNegative = false;
+                    //(+) - (+)
+                    //Don't change anything
                 }
                 else
                 {
+                    //(+) - (-)
+                    reducer = reducer.TrimStart('-');
+                    this.Add(reducer);
+                    return;
+                }
+            }
+            else
+            {
+                if (reducer[0] != '-')
+                {
+                    //(-) - (+)
+                    this.isNegative = false;
                     this.Add(reducer);
                     this.isNegative = true;
+                    return;
                 }
-                return;
+                else
+                {
+                    //(-) - (-)
+                    reducer = reducer.TrimStart('-');
+                }
             }
-            //if (reducer[0] == '-')
-            //{
-            //    //Both numbers are negative
-            //    reducer = reducer.TrimStart('-');
-            //    this.value = this.value.TrimStart('-');
-            //    this.isNegative = true;
-            //    this.Add(reducer);
-            //}
-            else { this.isNegative = false; }   //Both numbers are positive
 
             int numLength = (reducer.Length > this.value.Length) ? reducer.Length : this.value.Length;
             numLength++;
